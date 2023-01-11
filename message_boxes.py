@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import *
 
 
-def announce(title, text, buttons="Ok", size = "200x100"):
+def announce(title, text, buttons="Ok", width = 200, height = 100, x = 800, y = 400):
     root = Tk()
-    root.geometry(size)
+    argument = f"{width}x{height}+{x}+{y}"
+    root.geometry(argument)
     root.title(title)
     label = Label(root, text=text)
     label.pack()
@@ -14,25 +15,26 @@ def announce(title, text, buttons="Ok", size = "200x100"):
 
 
 class ButtonBox(object):
-    def __init__(self, text, title, button_options, size = "400x200"):
+    def __init__(self, text, title, button_options, width = 400, height = 200, x = 800, y = 400):
         self.value = None
         self.root = None
         self.button_options = button_options
         self.text = text
         self.title = title
-        self.size = size
-
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
     def options(self):
         self.root = tk.Tk()
         self.root.attributes("-topmost", True)
-        self.root.geometry(self.size)
+        argument = f"{self.width}x{self.height}+{self.x}+{self.y}"
+        self.root.geometry(argument)
         self.root.title(self.title)
         Label(self.root, text=self.text).pack()
         buttons = []
         for index, text in enumerate(self.button_options):
-            buttons.append(tk.Button(self.root, text = text, 
-                               command = lambda index = index: self.finish(self.button_options[index])))
-            buttons[index].pack()
+            buttons.append(tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).pack(padx=10, pady=10))
         self.root.mainloop()
         return self.value
 
