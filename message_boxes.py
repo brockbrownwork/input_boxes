@@ -51,11 +51,4 @@ class ButtonBox(object):
         self.root.destroy()
 
 r = ButtonBox("Do you want to continue?", "Continue?", ("Yes", "No", "Maybe", "You tell me")).options()
-if r == "Yes":
-    print("Yes")
-if r == "No":
-    print("No")
-if r == "Maybe":
-    print("Maybe")
-if r == "You tell me":
-    print("You tell me")
+print(r)
