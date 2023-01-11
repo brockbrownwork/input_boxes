@@ -31,10 +31,9 @@ class ButtonBox(object):
         argument = f"{self.width}x{self.height}+{self.x}+{self.y}"
         self.root.geometry(argument)
         self.root.title(self.title)
-        Label(self.root, text=self.text).pack()
-        buttons = []
+        Label(self.root, text=self.text).grid()
         for index, text in enumerate(self.button_options):
-            buttons.append(tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).pack(padx=10, pady=10))
+            tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
         self.root.mainloop()
         return self.value
 
