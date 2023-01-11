@@ -39,7 +39,9 @@ class ButtonBox(object):
         self.root.title(self.title)
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
         for index, text in enumerate(self.button_options):
-            tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
+            tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
+            # bind number button to the corresponding button
+            self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
         self.center()
         self.root.mainloop()
         return self.value
