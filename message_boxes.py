@@ -34,6 +34,7 @@ class ButtonBox(object):
     def options(self):
         self.root = tk.Tk()
         self.root.attributes("-topmost", True)
+        self.root.focus_force() # just in case
 
         self.root.title(self.title)
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
