@@ -40,7 +40,7 @@ class ButtonBox(object):
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
         for index, text in enumerate(self.button_options):
             tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
-            # bind number button to the corresponding button
+            # bind number button to the corresponding button please
             self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
         self.center()
         self.root.mainloop()
@@ -51,11 +51,4 @@ class ButtonBox(object):
         self.root.destroy()
 
 r = ButtonBox("Do you want to continue?", "Continue?", ("Yes", "No", "Maybe", "You tell me")).options()
-if r == "Yes":
-    print("Yes")
-if r == "No":
-    print("No")
-if r == "Maybe":
-    print("Maybe")
-if r == "You tell me":
-    print("You tell me")
+print(r)
