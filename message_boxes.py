@@ -40,12 +40,6 @@ class ButtonBox(object):
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
         for index, text in enumerate(self.button_options):
             tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
-        # width, height = (self.root.winfo_width(), self.root.winfo_height())
-        # print("width, height", width, height)
-        # argument = f"{self.root.winfo_width}x{self.root.winfo_height}+{self.x}+{self.y}"
-        # argument = f"{self.x}+{self.y}"
-        # self.root.geometry(argument)
-        # center self on screen
         self.center()
         self.root.mainloop()
         return self.value
