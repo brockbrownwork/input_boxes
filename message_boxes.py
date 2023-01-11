@@ -41,7 +41,8 @@ class ButtonBox(object):
         for index, text in enumerate(self.button_options):
             tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
             # bind number button to the corresponding button please
-            self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
+            if index < 10: # prevent from assigning to nonexisting keys
+                self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
         self.center()
         self.root.mainloop()
         return self.value
