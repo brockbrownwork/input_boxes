@@ -25,15 +25,27 @@ class ButtonBox(object):
         self.height = height
         self.x = x
         self.y = y
+    def center(self):
+        self.root.update_idletasks()
+        width, height = (self.root.winfo_width(), self.root.winfo_height())
+        x = (self.root.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.root.winfo_screenheight() // 2) - (height // 2) - 50 # 50 is for the awkwardness of the taskbar
+        self.root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     def options(self):
         self.root = tk.Tk()
         self.root.attributes("-topmost", True)
-        argument = f"{self.width}x{self.height}+{self.x}+{self.y}"
-        self.root.geometry(argument)
+
         self.root.title(self.title)
-        Label(self.root, text=self.text).grid()
+        Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
         for index, text in enumerate(self.button_options):
             tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index)
+        # width, height = (self.root.winfo_width(), self.root.winfo_height())
+        # print("width, height", width, height)
+        # argument = f"{self.root.winfo_width}x{self.root.winfo_height}+{self.x}+{self.y}"
+        # argument = f"{self.x}+{self.y}"
+        # self.root.geometry(argument)
+        # center self on screen
+        self.center()
         self.root.mainloop()
         return self.value
 
