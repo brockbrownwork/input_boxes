@@ -9,15 +9,13 @@ class InputBox(object):
     def show(self):
         '''Show the window, and wait for the user to click a button'''
         self.root = tk.Tk()
+        self.root.attributes("-topmost", True) # keeps the window on top of other windows
         buttons = []
         for index, text in enumerate(self.button_options):
             print(index, text)
             buttons.append(tk.Button(self.root, text = text, 
                                command = lambda index = index: self.finish(self.button_options[index])))
             buttons[index].pack()
-            # buttons.append(tk.Button(self.root, text = text, 
-            #                    command= lambda: self.finish(text)))
-            # buttons[-1].pack()
 
         # start the loop, and wait for the dialog to be
         # destroyed. Then, return the value:
