@@ -36,7 +36,7 @@ class ButtonBox(object):
         self.root.focus_force() # just in case
         self.root.title(self.title)
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
-        if type(self.button_options) == list or tuple:
+        if type(self.button_options) == list or type(self.button_options) == tuple:
             for index, text in enumerate(self.button_options):
                 tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
                 tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
