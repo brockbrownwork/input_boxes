@@ -40,7 +40,8 @@ class ButtonBox(object):
             tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
             tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
             # bind number button to the corresponding button please
-            self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
+            if index < 10: # prevent from assigning to nonexisting keys
+                self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
         self.center()
         self.root.mainloop()
         return self.value
