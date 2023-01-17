@@ -7,6 +7,7 @@ class InputBox(object):
         self.root = None
         self.text = text
         self.title = title
+        self.result = None
 
     def center(self):
         self.root.update_idletasks()
@@ -16,7 +17,7 @@ class InputBox(object):
         self.root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
     def return_entry(self):
-        Entry.get(self)
+        self.result = self.entry.get()
         self.root.destroy()
 
     def input(self):
@@ -25,11 +26,18 @@ class InputBox(object):
         self.root.focus_force() # just in case
         self.root.title(self.title)
         Label(self.root, text=self.text).grid()
-        Entry(self.root).grid()
-        Button(self.root, text = "OK", command = self.return_entry).grid(row=3, column=0, padx=25, pady=10)
-        Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=3, column=1, padx=25, pady=10)
+        self.entry = Entry(self.root)
+        self.entry.focus_set()
+        self.entry.grid()
+        self.ok_button = Button(self.root, text = "OK", command = self.return_entry)
+        self.ok_button.grid(row=3, column=0, padx=25, pady=10)
+        Button(self.root, text = "Cancel", command = lambda: self.root.destroy()).grid(row=3, column=1, padx=25, pady=10)
         self.center()
+        self.root.bind("<Return>", lambda e: self.return_entry())
+        self.root.bind("<Escape>", lambda: self.root.destroy())
         self.root.mainloop()
 
-r = InputBox("Enter your name", "Name").input()
-print(r)
+box = InputBox("Enter your name", "Name")
+box.input()
+result = box.result
+print("result:", result)
