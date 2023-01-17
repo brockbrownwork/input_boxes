@@ -49,7 +49,7 @@ def inputbox(text=None, title=None):
         """Gets and prints the content of the entry"""
         content = entry.get()
         root.destroy()
-        return(content)  
+        return content 
 
     Label(root, text=text).grid(row=0, sticky=W)
 
