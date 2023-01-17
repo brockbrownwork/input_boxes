@@ -37,7 +37,10 @@ class InputBox(object):
         self.root.bind("<Escape>", lambda: self.root.destroy())
         self.root.mainloop()
 
-box = InputBox("Enter your name", "Name")
-box.input()
-result = box.result
-print("result:", result)
+def text_input(description, title):
+    box = InputBox(description, title)
+    box.input()
+    return box.result
+
+
+print("result:", text_input("Enter some stuff", "Hello"))
