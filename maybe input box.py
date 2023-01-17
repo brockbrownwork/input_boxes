@@ -33,8 +33,8 @@ class InputBox(object):
         self.ok_button.grid(row=3, column=0, padx=25, pady=10)
         Button(self.root, text = "Cancel", command = lambda: self.root.destroy()).grid(row=3, column=1, padx=25, pady=10)
         self.center()
-        self.root.bind("<Return>", lambda e: self.return_entry())
-        self.root.bind("<Escape>", lambda: self.root.destroy())
+        self.root.bind("<Return>", lambda e = None: self.return_entry())
+        self.root.bind("<Escape>", lambda e = None: self.root.destroy())
         self.root.mainloop()
 
 def text_input(description, title = ''):
