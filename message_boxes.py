@@ -2,21 +2,6 @@ import tkinter as tk
 from tkinter import *
 
 
-def announce(title, text, buttons="Ok"):
-    root = Tk()
-    root.title(title)
-    label = Label(root, text=text)
-    label.grid()
-    button = Button(root, text=buttons, command=root.destroy)
-    button.grid(row=2, columnspan=len(text))
-    root.update_idletasks()
-    width, height = (root.winfo_width(), root.winfo_height())
-    x = (root.winfo_screenwidth() // 2) - (width // 2)
-    y = (root.winfo_screenheight() // 2) - (height // 2) - 50 # 50 is for the awkwardness of the taskbar
-    root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
-    root.mainloop()
-
-
 class ButtonBox(object):
     def __init__(self, text, title, button_options):
         self.value = None
@@ -36,16 +21,15 @@ class ButtonBox(object):
         self.root.focus_force() # just in case
         self.root.title(self.title)
         Label(self.root, text=self.text).grid(columnspan=len(self.button_options))
-        if type(self.button_options) == list or type(self.button_options) == tuple:
+        if type(self.button_options) == str:
+            self.button_options = [self.button_options]
+        if type(self.button_options) == list or tuple:
             for index, text in enumerate(self.button_options):
                 tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
-                tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
+                tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
                 # bind number button to the corresponding button please
                 if index < 10: # prevent from assigning to nonexisting keys
                     self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
-        if type(self.button_options) == str:
-            tk.Button(self.root, text = self.button_options, command = self.finish(self.button_options)).grid(row=3, columnspan=len(self.button_options), padx=25, pady=10)
-            tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
         self.center()
         self.root.mainloop()
         return self.value
@@ -54,7 +38,30 @@ class ButtonBox(object):
         self.value = value
         self.root.destroy()
 
+def inputbox(text=None, title=None):
+    root = Tk()
+    root.attributes("-topmost", True)
+    root.focus_force() # just in case
+    root.title(title)
 
-r = ButtonBox("Do you want to continue?", "Continue?", "Sure").options()
+    # Create this method before you create the entry
+    def return_entry():
+        """Gets and prints the content of the entry"""
+        content = entry.get()
+        root.destroy()
+        return(content)  
+
+    Label(root, text=text).grid(row=0, sticky=W)
+
+    entry = Entry(root)
+    entry.grid(row=1, column=1)
+
+    # Connect the entry with the return button
+    entry.bind('<Return>', return_entry) 
+
+    mainloop()
+        
+
+r = inputbox("what is 2 + 2?", None)
 print(r)
 
