@@ -38,30 +38,55 @@ class ButtonBox(object):
         self.value = value
         self.root.destroy()
 
-def inputbox(text=None, title=None):
-    root = Tk()
-    root.attributes("-topmost", True)
-    root.focus_force() # just in case
-    root.title(title)
+class InputBox(object):
+    def __init__(self, text, title):
+        self.value = None
+        self.root = None
+        self.text = text
+        self.title = title
+        self.result = None
 
-    # Create this method before you create the entry
-    def return_entry():
-        """Gets and prints the content of the entry"""
-        content = entry.get()
-        root.destroy()
-        return content 
+    def center(self):
+        self.root.update_idletasks()
+        width, height = (self.root.winfo_width(), self.root.winfo_height())
+        x = (self.root.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.root.winfo_screenheight() // 2) - (height // 2) - 50 # 50 is for the awkwardness of the taskbar
+        self.root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
-    Label(root, text=text).grid(row=0, sticky=W)
+    def return_entry(self):
+        self.result = self.entry.get()
+        self.root.destroy()
 
-    entry = Entry(root)
-    entry.grid(row=1, column=1)
+    def input(self):
+        self.root = tk.Tk()
+        self.root.attributes("-topmost", True)
+        self.root.focus_force() # just in case
+        self.root.title(self.title)
+        Label(self.root, text=self.text).grid()
+        self.entry = Entry(self.root)
+        self.entry.focus_set()
+        self.entry.grid()
+        self.ok_button = Button(self.root, text = "OK", command = self.return_entry)
+        self.ok_button.grid(row=3, columnspan=(len(self.text) * 2), sticky=W, padx=25, pady=10)
+        Button(self.root, text = "Cancel", command = lambda: self.root.destroy()).grid(row=3, columnspan=(len(self.text) * 2), sticky=E, padx=25, pady=10)
+        self.center()
+        self.root.bind("<Return>", lambda e: self.return_entry())
+        self.root.bind("<Escape>", lambda: self.root.destroy())
+        self.root.mainloop()
 
-    # Connect the entry with the return button
-    entry.bind('<Return>', return_entry) 
+def button_box(text=None, title=None, button_options=["Ok"]):
+    bttn = ButtonBox(text=text, title=title, button_options=button_options).options()
+    return bttn
 
-    mainloop()
-        
+def input_box(text=None, title=None):
+    box = InputBox(text=text, title=title)
+    box.input()
+    return box.result
 
-r = inputbox("what is 2 + 2?", None)
-print(r)
-
+r = input_box("Enter your name.")
+if r == "Joe":
+    r = button_box("Hello Joe!", None, ["hello!", "How are you?", "bye!"])
+    if r == "How are you?":
+        button_box("I'm fine, thanks!", None, ["Ok", "bye!"])
+else:
+    button_box("Hello stranger!", None, ["hello!", "bye!"])

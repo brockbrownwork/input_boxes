@@ -40,4 +40,3 @@ class InputBox(object):
 box = InputBox("Enter your name", "Name")
 box.input()
 result = box.result
-print("result:", result)
