@@ -182,5 +182,6 @@ def login():
                 r = button_box("Same lol", "Login")          
 
 
-
-input_box("Hello!")
+if __name__ == "__main__":
+    response = input_box("Hello!")
+    print("Response:", response)
