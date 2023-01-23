@@ -32,12 +32,15 @@ class ButtonBox(object):
         if type(self.button_options) == str:
             self.button_options = [self.button_options]
         if type(self.button_options) == list or tuple:
-            for index, text in enumerate(self.button_options):
-                tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
-                tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
-                # bind number button to the corresponding button please
-                if index < 10: # prevent from assigning to nonexisting keys
-                    self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
+                for index, text in enumerate(self.button_options):
+                    if index <10:
+                        tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, columnspan=3, padx=25, pady=10)
+                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
+                        self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
+                    if index == 0:
+                        tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, columnspan=2, padx=25, pady=10)
+                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
+                        self.root.bind("<Return>", lambda event, index = index: self.finish(self.button_options[index]))
         self.center()
         self.root.mainloop()
         return self.value
@@ -183,5 +186,5 @@ def login():
 
 
 if __name__ == "__main__":
-    response = input_box("Hello!")
+    response = button_box("Hello!", button_options=["Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok"])
     print("Response:", response)
