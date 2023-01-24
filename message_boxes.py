@@ -3,7 +3,7 @@ from tkinter import *
 
 
 '''
-message_boxes V.1.0.0
+MESSAGE_BOXES V.1.0.0
 CURRENTLY IN DEVELOPMENT
 CURRENTLY IN BETA TESTING
 '''
