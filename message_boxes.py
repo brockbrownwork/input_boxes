@@ -28,10 +28,10 @@ class MessageBox(object):
         self.root.attributes("-topmost", True)
         self.root.focus_force() # just in case
         self.root.title(self.title)
-        Label(self.root, text=self.text, justify=CENTER, bg=self.Lbg, fg=self.Lfg).grid(columnspan=2, padx=25, pady=10)
-        tk.Button(self.root, text = self.button_options, command = self.finish).grid(row=3, columnspan=2, padx=25, pady=10)
+        Label(self.root, text=self.text, justify=CENTER, bg=self.Lbg, fg=self.Lfg).pack(padx=25, pady=10)
+        tk.Button(self.root, text = self.button_options, command = self.finish).pack(side=LEFT, padx=25, pady=10)
         self.root.bind("<Return>", lambda event: self.finish())
-        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=2, padx=25, pady=10)
+        tk.Button(self.root, text = "Cancel", command = self.root.destroy).pack(side=RIGHT, padx=25, pady=10)
         self.center()
         self.root.mainloop()
         return self.value
@@ -136,7 +136,7 @@ class DoubleInputBox(object):
     A message box that allows for two seperate text entries, with two different labels. Wil return ("text_input1", "text_input2").
     
     '''
-    def __init__(self, text1, text2, title = '', show1 = None, show2 = "*", Wbg="white", Lbg1="white", Lfg1="black", Lbg2="white", Lfg2="black", Ebg1="white", Ebg2="white"):
+    def __init__(self, text1, text2, title = None, show1 = None, show2 = None, Wbg="white", Lbg1="white", Lfg1="black", Lbg2="white", Lfg2="black", Ebg1="white", Ebg2="white"):
         self.value = None
         self.root = None
         self.text1 = text1
@@ -175,7 +175,7 @@ class DoubleInputBox(object):
         self.entry1 = Entry(self.root, show=self.show1, bg=self.Ebg1)
         self.entry1.focus_set()
         self.entry1.grid(columnspan = 2)
-        Label(self.root, text=self.text2, bg=self.Lbg2, fg=self.Lbg2).grid(columnspan = 2)
+        Label(self.root, text=self.text2, bg=self.Lbg2, fg=self.Lfg2).grid(columnspan = 2)
         self.entry2 = Entry(self.root, show=self.show2, bg=self.Ebg2)
         self.entry2.grid(columnspan = 2)
         self.ok_button = Button(self.root, text = "OK", command = self.return_entry)
@@ -187,20 +187,20 @@ class DoubleInputBox(object):
         self.root.mainloop()
 
 
-def message_box(text=None, title=None, button_options=["Ok"]):
+def message(text=None, title=None, button_options="Ok"):
     msg = MessageBox(text=text, title=title, button_options=button_options).message()
     return msg
 
-def button_box(text=None, title=None, button_options=["Ok"]):
+def buttons(text=None, title=None, button_options=["Ok"]):
     bttn = ButtonBox(text=text, title=title, button_options=button_options).options()
     return bttn
 
-def input_box(text=None, title=None, show=None):
+def input(text=None, title=None, show=None):
     box = InputBox(text=text, title=title, show=show)
     box.input()
     return box.result
 
-def double_input_box(text1=None, text2=None, title=None, show1=None, show2=None):
+def double_input(text1=None, text2=None, title=None, show1=None, show2="*"):
     box = DoubleInputBox(text1=text1, text2=text2, title=title, show1=show1, show2=show2)
     box.input()
     try:
@@ -209,24 +209,3 @@ def double_input_box(text1=None, text2=None, title=None, show1=None, show2=None)
         print(e)
         final_result = None
     return final_result
-
-def login():
-    r = double_input_box("Username:", "Password:", "Login")
-    if r == None:
-        print("Login cancelled.")
-    if r != ("Joe", "123") and r != None:
-        button_box("Login failed!", "Login")
-        login()
-    if r == ("Joe", "123"):
-        r = button_box("Login successful!", "Login")
-        if r == "Ok":
-            r = input_box("What would you like to do today?", "Login")
-            if r == "Sleep":
-                r = button_box("Same lol", "Login")          
-
-
-r = message_box("Hello, world!", "Hello", "Good Morning")
-if r == "Good Morning":
-    login()
-else:
-    message_box("Goodbye!", "Goodbye")
