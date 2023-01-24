@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import *
 
-#message_boxes V.1.0.0
 
 '''
+message_boxes V.1.0.0
 CURRENTLY IN DEVELOPMENT
 CURRENTLY IN BETA TESTING
 '''
