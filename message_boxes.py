@@ -2,6 +2,44 @@ import tkinter as tk
 from tkinter import *
 
 
+class MessageBox(object):
+    #use tkinter to create a window with a label and a button, that returns the text of the button pressed
+
+    def __init__(self, text, title, button_options, Wbg="white", Lbg="white", Lfg="black"):
+        self.value = None
+        self.root = None
+        self.text = text
+        self.title = title
+        self.button_options = button_options
+        self.Wbg = Wbg
+        self.Lbg = Lbg
+        self.Lfg = Lfg
+
+    def center(self):
+        self.root.update_idletasks()
+        width, height = (self.root.winfo_width(), self.root.winfo_height())
+        x = (self.root.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.root.winfo_screenheight() // 2) - (height // 2) - 50 # 50 is for the awkwardness of the taskbar
+        self.root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+
+    def message(self):
+        self.root = tk.Tk()
+        self.root['background'] = self.Wbg
+        self.root.attributes("-topmost", True)
+        self.root.focus_force() # just in case
+        self.root.title(self.title)
+        Label(self.root, text=self.text, justify=CENTER, bg=self.Lbg, fg=self.Lfg).grid(columnspan=2, padx=25, pady=10)
+        tk.Button(self.root, text = self.button_options, command = self.finish).grid(row=3, columnspan=2, padx=25, pady=10)
+        self.root.bind("<Return>", lambda event: self.finish())
+        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=2, padx=25, pady=10)
+        self.center()
+        self.root.mainloop()
+        return self.value
+
+    def finish(self):
+        self.value = self.button_options
+        self.root.destroy()
+
 class ButtonBox(object):
     '''
     A message box that returns the text of the button pressed. Can have as many buttons as you want, as long as there is at least one. 
@@ -28,19 +66,17 @@ class ButtonBox(object):
         self.root.attributes("-topmost", True)
         self.root.focus_force() # just in case
         self.root.title(self.title)
-        Label(self.root, text=self.text, bg=self.Lbg, fg=self.Lfg).grid(columnspan=len(self.button_options), padx=25, pady=10)
+        Label(self.root, text=self.text, justify=CENTER, bg=self.Lbg, fg=self.Lfg).grid(columnspan=len(self.button_options), padx=25, pady=10)
         if type(self.button_options) == str:
             self.button_options = [self.button_options]
         if type(self.button_options) == list or tuple:
                 for index, text in enumerate(self.button_options):
-                    if index <10:
-                        tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, columnspan=3, padx=25, pady=10)
-                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
+                    if index < 10:
+                        tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
+                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
                         self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
-                    if index == 0:
-                        tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, columnspan=2, padx=25, pady=10)
-                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.text), padx=25, pady=10)
-                        self.root.bind("<Return>", lambda event, index = index: self.finish(self.button_options[index]))
+
+                    
         self.center()
         self.root.mainloop()
         return self.value
@@ -151,6 +187,10 @@ class DoubleInputBox(object):
         self.root.mainloop()
 
 
+def message_box(text=None, title=None, button_options=["Ok"]):
+    msg = MessageBox(text=text, title=title, button_options=button_options).message()
+    return msg
+
 def button_box(text=None, title=None, button_options=["Ok"]):
     bttn = ButtonBox(text=text, title=title, button_options=button_options).options()
     return bttn
@@ -185,6 +225,8 @@ def login():
                 r = button_box("Same lol", "Login")          
 
 
-if __name__ == "__main__":
-    response = button_box("Hello!", button_options=["Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok"])
-    print("Response:", response)
+r = message_box("Hello, world!", "Hello", "Good Morning")
+if r == "Good Morning":
+    login()
+else:
+    message_box("Goodbye!", "Goodbye")
