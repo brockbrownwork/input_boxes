@@ -1,6 +1,13 @@
 import tkinter as tk
 from tkinter import *
 
+#message_boxes V.1.0.0
+
+'''
+CURRENTLY IN DEVELOPMENT
+CURRENTLY IN BETA TESTING
+'''
+
 
 class MessageBox(object):
     #use tkinter to create a window with a label and a button, that returns the text of the button pressed
@@ -26,7 +33,7 @@ class MessageBox(object):
         self.root = tk.Tk()
         self.root['background'] = self.Wbg
         self.root.attributes("-topmost", True)
-        self.root.focus_force() # just in case
+        self.root.after(1, lambda: self.root.focus_force())
         self.root.title(self.title)
         Label(self.root, text=self.text, justify=CENTER, bg=self.Lbg, fg=self.Lfg).pack(padx=25, pady=10)
         tk.Button(self.root, text = self.button_options, command = self.finish).pack(side=LEFT, padx=25, pady=10)
@@ -72,9 +79,11 @@ class ButtonBox(object):
         if type(self.button_options) == list or tuple:
                 for index, text in enumerate(self.button_options):
                     if index < 10:
-                        tk.Button(self.root, text = text, command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
-                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
+                        tk.Button(self.root, text = f"{index + 1}: {text}", command = lambda index = index: self.finish(self.button_options[index])).grid(row=3, column=index, padx=25, pady=10)
                         self.root.bind(str(index + 1), lambda event, index = index: self.finish(self.button_options[index]))
+                        tk.Button(self.root, text = "Cancel", command = self.root.destroy).grid(row=4, columnspan=len(self.button_options), padx=25, pady=10)
+                        self.root.bind("<Escape>", lambda event: self.root.destroy())
+                        
 
                     
         self.center()
