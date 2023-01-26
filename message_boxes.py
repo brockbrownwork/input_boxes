@@ -218,6 +218,3 @@ def double_input(text1=None, text2=None, title=None, show1=None, show2="*"):
         print(e)
         final_result = None
     return final_result
-
-r = double_input("Enter your username", "Enter your password", title="Login")
-print(r)
