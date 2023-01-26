@@ -214,7 +214,7 @@ def double_input(text1=None, text2=None, title=None, show1=None, show2="*"):
     box.input()
     try:
         final_result = box.result + " " + box.result2
-    except AttributeError as e:
+    except TypeError as e:
         print(e)
         final_result = None
     return final_result
