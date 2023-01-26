@@ -213,8 +213,11 @@ def double_input(text1=None, text2=None, title=None, show1=None, show2="*"):
     box = DoubleInputBox(text1=text1, text2=text2, title=title, show1=show1, show2=show2)
     box.input()
     try:
-        final_result = box.result, box.result2
+        final_result = box.result + " " + box.result2
     except AttributeError as e:
         print(e)
         final_result = None
     return final_result
+
+r = double_input("Enter your username", "Enter your password", title="Login")
+print(r)
